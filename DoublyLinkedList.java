@@ -58,8 +58,11 @@ public class DoublyLinkedList<E extends Comparable<E>>{
      */
     public void insert(E val){
         checkValNull(val);
-
-        if(val.compareTo(head.con) < 0){
+        if(size() == 0){
+            //first node
+            addFirstNodeOfList(val);
+        }
+        else if(val.compareTo(head.con) < 0){
             //val < smallest val, this node belongs at the front
             addFront(val);
         }
@@ -70,13 +73,13 @@ public class DoublyLinkedList<E extends Comparable<E>>{
         else{
             //this val goes into middle
             Node<E> temp = tail;
-            while(val.compareTo(temp.con) > 0){
-                //while val > temp.con, move up list
+            while(val.compareTo(temp.con) < 0){
+                //while val < temp.con, move up list
                 temp = temp.previous; 
             }
             //insert val after temp
             Node<E> oldNext = temp.next;
-            temp.next = new Node<E>(temp, val, oldNext)
+            temp.next = new Node<E>(temp, val, oldNext);
             oldNext.previous = temp.next;
             size++;
         }
@@ -96,8 +99,8 @@ public class DoublyLinkedList<E extends Comparable<E>>{
             Node<E> temp = new Node<E>(null, val, head);
             head.previous = temp;
             head = temp;
+            size++;
         }
-        size++;
     }
 
     /**
@@ -114,14 +117,15 @@ public class DoublyLinkedList<E extends Comparable<E>>{
             Node<E> temp = new Node<E>(tail, val, null);
             tail.next = temp;
             tail = temp;
+            size++;
         }
-        size++;
     }
 
     private void addFirstNodeOfList(E val){
         Node<E> temp = new Node<E>(val);
         head = temp;
         tail = temp;
+        size++;
     }
 
     /**
@@ -166,7 +170,8 @@ public class DoublyLinkedList<E extends Comparable<E>>{
     /**
      * Removes the head node from the list
      */
-    public void removeHead(){
+    public E removeHead(){
+        E temp = head.con;
         if(size() == 1){
             //only node in list
             empty();
@@ -177,19 +182,18 @@ public class DoublyLinkedList<E extends Comparable<E>>{
             head.previous = null;
             size--;
         }
+        return temp;
     }
 
     public E removeTail(){
-        E temp = null;
+        E temp = tail.con;
         if(size() == 1){
             //removing last node
-            temp = head.con;
             empty();
         }
         else{
-            //removing non-last tail
+            //removing tail that is not only node
             tail = tail.previous;
-            temp = tail.next.con;
             tail.next = null;
             size--;
         }
