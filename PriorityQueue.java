@@ -5,6 +5,11 @@ public class PriorityQueue<E extends Comparable<E>>{
         container = new DoublyLinkedList<E>();
     } 
     
+    /**
+     * Puts the item into the right place in the
+     * queue 
+     * @param item thing to be pushed
+     */
     public void pushIn(E item){
         container.insert(item);
     }
@@ -14,7 +19,7 @@ public class PriorityQueue<E extends Comparable<E>>{
      * @return Item at front of queue
      */
     public E pop(){
-        return container.removeTail();
+        return container.removeHead();
     }
 
     /**
@@ -31,5 +36,10 @@ public class PriorityQueue<E extends Comparable<E>>{
      */
     public boolean isEmpty(){
         return size() == 0;
+    }
+
+    @Override
+    public String toString(){
+        return container.toString();
     }
 }
